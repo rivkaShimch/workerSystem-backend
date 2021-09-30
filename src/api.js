@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require("mongoose");
 const User = require('../models/user')
 const bodyParser = require('body-parser')
-
+const cors = require('cors')
 dotenv.config()
 mongoose.connect('mongodb+srv://rivkaF:1234@cluster0.j5jer.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   {
@@ -20,6 +20,7 @@ mongoose.connection.on("connected", () => {
 });
 const app = express();
 
+app.use(cors())
 app.use(bodyParser.urlencoded({
     extended: true,
     defer: true
@@ -48,7 +49,9 @@ router.post('/addUser', async(req,res)=>{
 })
 
 router.post('/getUser', async(req,res)=>{
-    const {id}= JSON.parse(req.body.toString())
+    //JSON.parse(
+    const {id}=req.body
+    console.log("bodyy", req.body);
     User.findOne({id:id})
     .then((result)=>{
         if(result)
