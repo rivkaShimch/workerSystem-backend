@@ -33,17 +33,21 @@ router.get('/test', (req,res)=>{
         'hello':'hi'})})
 
 router.post('/addUser', async(req,res)=>{
-    const {id, role}= JSON.parse(req.body.toString())
+    const {id, role}= req.body
+    console.log(req.body);
     let newUser = new User();
     newUser.id= id
     newUser.role= role
+    console.log('the userr', newUser);
     await newUser.save().then((result)=>{
+        console.log("sucess");
         res.status(200).json({
             message:"User created",
-            res:result
+            user:result
     })
     })
     .catch((err)=>{
+        console.log('the err', err);
         res.status(500)
     })
 })
